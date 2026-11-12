@@ -786,8 +786,9 @@ const ICONS={
  flower:'<svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="2.5"/><path d="M12 6.5c0-2 1-3.5 2.5-3.5S17 4.5 15.5 7M12 6.5C12 4.5 11 3 9.5 3S7 4.5 8.5 7M14.5 9c2 0 3.5 1 3.5 2.5S16.5 14 14 12.5M9.5 9C7.5 9 6 10 6 11.5S7.5 14 10 12.5M12 11.5V21M12 17c-2-2-4-2-5-1"/></svg>',
  cog:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'
 };
-const TABS=[["home","סקירה"],["ledger","תנועות"],["suppliers","ספקים"],["goods","סחורה"],["settings","קבועות"]];
-const TICON={home:"home",ledger:"list",suppliers:"truck",goods:"flower",settings:"cog"};
+ICONS.cal='<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>';
+const TABS=[["home","סקירה"],["ledger","תנועות"],["suppliers","ספקים"],["goods","סחורה"],["events","חגים"],["settings","קבועות"]];
+const TICON={home:"home",ledger:"list",suppliers:"truck",goods:"flower",events:"cal",settings:"cog"};
 let tab="home";
 let ui={period:"week",pMonth:"",pYear:0,cFrom:"",cTo:"",week:weekStart(today()),cmpMonth:new Date().getMonth(),cmpYear:new Date().getFullYear(),
   f:{type:"all",method:"",supplier:"",cat:"",from:addDays(today(),-30),to:today(),q:""},
@@ -847,14 +848,14 @@ addEventListener("resize",()=>movePill());
 document.getElementById("tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(b){tab=b.dataset.tab;render();window.scrollTo(0,0)}});
 document.getElementById("fab").onclick=()=>quickAdd();
 
-const PH={home:["סקירה","מה נכנס, מה יצא ומה נשאר"],ledger:["הכנסות והוצאות","סינון לפי אמצעי תשלום, ספק ותאריכים"],suppliers:["ספקים ותעודות משלוח","מחירונים, תעודות פתוחות ותשלומים"],goods:["מעקב סחורה","כמויות לפי פרח, תקופה מול תקופה"],settings:["הוצאות קבועות וגיבוי","נרשמות אוטומטית כל חודש"]};
+const PH={home:["סקירה","מה נכנס, מה יצא ומה נשאר"],ledger:["הכנסות והוצאות","סינון לפי אמצעי תשלום, ספק ותאריכים"],suppliers:["ספקים ותעודות משלוח","מחירונים, תעודות פתוחות ותשלומים"],goods:["מעקב סחורה","כמויות לפי פרח, תקופה מול תקופה"],events:["חגים ואירועים","סיכום, עובדים, השוואת ספקים ולקחים לכל חג"],settings:["הוצאות קבועות וגיבוי","נרשמות אוטומטית כל חודש"]};
 // פתיחה תמיד מראש הדף (גם אחרי רענון ואחרי טעינת הנתונים)
 try{history.scrollRestoration="manual"}catch(_){}
 let _firstPaint=0;const toTop=()=>{try{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0}catch(_){}};
 addEventListener("pageshow",toTop);addEventListener("load",()=>{toTop();setTimeout(toTop,150)});
 function render(){if(_firstPaint<3){_firstPaint++;requestAnimationFrame(toTop)}renderTabs();if(!FB.cfg||FB.ref){document.getElementById("fab").style.display="";document.body.classList.remove("no-fab")}const a=document.getElementById("app");
   document.getElementById("hdate").textContent=new Date().toLocaleDateString("he-IL",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-  a.innerHTML=`<div class="pagehead"><div><h2>${PH[tab][0]}</h2><div class="sub">${PH[tab][1]}</div></div></div>`+({home:vHome,ledger:vLedger,suppliers:vSuppliers,goods:vGoods,settings:vSettings})[tab]();}
+  a.innerHTML=`<div class="pagehead"><div><h2>${PH[tab][0]}</h2><div class="sub">${PH[tab][1]}</div></div></div>`+({home:vHome,ledger:vLedger,suppliers:vSuppliers,goods:vGoods,events:vEvents,settings:vSettings})[tab]();}
 
 
 const EI={ok:'<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',list:'<svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>',truck:'<svg viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>',doc:'<svg viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',flower:'<svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="2.5"/><path d="M12 11.5V21M12 17c-2-2-4-2-5-1"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>'};
@@ -1062,8 +1063,124 @@ function vGoods(){
     ${names.map(k=>{const a=(A[k]||{}).qty||0,b=(B[k]||{}).qty||0;const up=a>b,eq=a===b;
       return `<tr><td>${esc(k)}<div class="muted" style="font-size:12px">${money((A[k]||{}).cost||0)}</div></td><td class="n"><b>${a.toLocaleString("he-IL")}</b></td><td class="n">${b.toLocaleString("he-IL")}</td><td class="chg ${eq?"":up?"pos":"neg"}">${eq?"—":pct(a,b)}</td></tr>`}).join("")}</table>`
     :emptyState("flower","אין נתוני כמויות בתקופות האלה","כדי לעקוב אחרי כמויות, הזן תעודות משלוח במצב \"פריט פריט\"")}</div>
-  ${per.length?`<h2>תקופות וחגים שמורים</h2><div class="card list">${per.map(p=>`<div class="it"><div class="main"><div class="t">${esc(p.name)}</div><div class="s">${fmtD(p.from)} – ${fmtD(p.to)}</div></div><button class="btn-x" onclick="delPeriod('${p.id}')">מחיקה</button></div>`).join("")}</div>`:""}`;
+  ${per.length?`<h2>תקופות וחגים שמורים</h2><div class="card list">${per.map(p=>`<div class="it"><div class="main"><div class="t">${esc(p.name)}</div><div class="s">${fmtD(p.from)} – ${fmtD(p.to)}</div></div><button class="btn-x" onclick="delPeriod('${p.id}')">מחיקה</button></div>`).join("")}</div>`:""}
+  ${vLidor()}`;
 }
+/* ============ סחורה ללידור (מעקב בלבד) ============ */
+function LD(){if(!Array.isArray(S.lidor))S.lidor=[];return S.lidor}
+function vLidor(){
+  const list=LD().slice().sort((a,b)=>b.date.localeCompare(a.date));
+  const totQty=list.reduce((a,x)=>a+(+x.qty||0),0),totVal=list.reduce((a,x)=>a+(+x.value||0),0);
+  const by={};list.forEach(x=>{const k=(x.item||"").trim()||"ללא שם";by[k]=by[k]||{qty:0,value:0};by[k].qty+=+x.qty||0;by[k].value+=+x.value||0});
+  const keys=Object.keys(by).sort((a,b)=>by[b].qty-by[a].qty);
+  return `<h2>סחורה ללידור</h2>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;align-items:center;gap:8px">
+      <div><div class="muted" style="font-size:13px">סך הכול עבר ללידור</div>
+      <div style="font-size:20px;font-weight:700">${totQty.toLocaleString("he-IL")} יח׳${totVal?` · ${money(totVal)}`:""}</div></div>
+      <button class="btn-p btn-s" onclick="lidorDialog()">+ רישום</button>
+    </div>
+    ${keys.length?`<table style="margin-top:10px"><tr><th>פריט</th><th>כמות</th><th>שווי</th></tr>${keys.map(k=>`<tr><td>${esc(k)}</td><td class="n"><b>${by[k].qty.toLocaleString("he-IL")}</b></td><td class="n">${by[k].value?money(by[k].value):"—"}</td></tr>`).join("")}</table>`:""}
+  </div>
+  ${list.length?`<div class="card list">${list.map(x=>`<div class="it"><div class="main"><div class="t">${esc(x.item)} · ${(+x.qty||0).toLocaleString("he-IL")} יח׳</div><div class="s">${fmtD(x.date)}${x.value?" · "+money(x.value):""}${x.note?" · "+esc(x.note):""}</div></div><button class="btn-x" onclick="delLidor('${x.id}')">מחיקה</button></div>`).join("")}</div>`
+   :emptyState("flower","עוד לא נרשמה סחורה ללידור","כל פעם שמושכים סחורה ללידור, רושמים כאן ורואים כמה עבר בסך הכול")}`;
+}
+function lidorDialog(){
+  const names=allItemNames();
+  openDlg("סחורה ללידור",`<label>תאריך</label><input id="ldD" type="date" value="${today()}">
+  <label>פריט</label><input id="ldI" list="ldList" placeholder="למשל: ורד אדום"><datalist id="ldList">${names.map(n=>`<option value="${esc(n)}">`).join("")}</datalist>
+  <div class="grid g2"><div><label>כמות</label><input id="ldQ" type="number" inputmode="decimal" min="0"></div><div><label>שווי בש״ח (לא חובה)</label><input id="ldV" type="number" inputmode="decimal" min="0"></div></div>
+  <label>הערה (לא חובה)</label><input id="ldN">`,
+  `<button class="btn-p" onclick="saveLidor()">שמירה</button><button onclick="dlg.close()">ביטול</button>`)}
+function saveLidor(){const d=v("ldD"),it=v("ldI").trim(),q=+v("ldQ"),val=+v("ldV")||0,n=v("ldN").trim();
+  if(!d||!it||!(q>0))return toast("נא למלא תאריך, פריט וכמות");
+  LD().push({id:uid(),date:d,item:it,qty:q,value:val,note:n});save();dlg.close();render();toast("נרשם ✓")}
+async function delLidor(id){if(!await ask("למחוק את הרישום?"))return;S.lidor=LD().filter(x=>x.id!==id);save();render()}
+
+/* ============ חגים ואירועים ============ */
+const RATE_L={good:"טוב",mid:"בינוני",bad:"גרוע"},RATE_V={good:3,mid:2,bad:1};
+function evNorm(n){return String(n||"").replace(/[0-9"'׳״]/g,"").replace(/\s+/g," ").trim()}
+function evPrevLessons(p){
+  const k=evNorm(p.name);
+  return S.periods.filter(x=>x.id!==p.id&&x.from<p.from&&evNorm(x.name)===k&&(x.lessons||"").trim()).sort((a,b)=>b.from.localeCompare(a.from))[0]||null}
+function evWorkersCost(p){return (p.workers||[]).reduce((a,w)=>a+(+w.pay||0),0)}
+function vEvents(){
+  const per=S.periods.slice().sort((a,b)=>b.from.localeCompare(a.from));
+  if(ui.ev){const p=S.periods.find(x=>x.id===ui.ev);if(p)return vEvent(p);ui.ev=""}
+  return `<div class="row" style="margin-bottom:10px"><button class="btn-p" onclick="eventNewDialog()">+ חג / אירוע חדש</button></div>
+  ${per.length?`<div class="card list">${per.map(p=>{const s=summary(p.from,p.to),net=s.net-evWorkersCost(p);
+    return `<div class="it" style="cursor:pointer" onclick="ui.ev='${p.id}';render();window.scrollTo(0,0)"><div class="main"><div class="t">${esc(p.name)}</div><div class="s">${fmtD(p.from)} – ${fmtD(p.to)}</div></div><div class="amt ${net>=0?"":"neg"}" style="font-weight:700">${sMoney(net)}</div></div>`}).join("")}</div>`
+   :emptyState("cal","עוד אין חגים שמורים","יוצרים חג עם תאריכים, וכל התעודות, ההכנסות וההוצאות של התקופה נאספות אליו לבד")}`;
+}
+function eventNewDialog(){openDlg("חג / אירוע חדש",`<label>שם</label><input id="peN" placeholder="למשל: שבועות 2027">
+  <div class="grid g2"><div><label>מתאריך</label><input id="peF" type="date" value="${today()}"></div><div><label>עד תאריך</label><input id="peT" type="date" value="${addDays(today(),7)}"></div></div>`,
+  `<button class="btn-p" onclick="saveEventNew()">שמירה</button><button onclick="dlg.close()">ביטול</button>`)}
+function saveEventNew(){const n=v("peN").trim(),f=v("peF"),t=v("peT");if(!n||!f||!t)return toast("נא למלא שם ותאריכים");if(t<f)return toast("תאריך הסיום לפני ההתחלה");
+  const p={id:uid(),name:n,from:f,to:t};S.periods.push(p);save();dlg.close();ui.ev=p.id;render();toast("החג נשמר")}
+function evP(){return S.periods.find(x=>x.id===ui.ev)}
+function evSet(field,val){const p=evP();if(!p)return;p[field]=val;save();render()}
+function vEvent(p){
+  const s=summary(p.from,p.to),wc=evWorkersCost(p),net=s.net-wc;
+  const prev=evPrevLessons(p);
+  const made=+p.made||0,sold=+p.sold||0,left=Math.max(0,made-sold);
+  const stock=qtyByItem(p.from,p.to,""),stockKeys=Object.keys(stock).sort((a,b)=>stock[b].qty-stock[a].qty);
+  /* השוואת ספקים: לכל פריט, מכל ספק */
+  const cmp={};
+  for(const n of S.notes){if(n.mode!=="items"||n.date<p.from||n.date>p.to)continue;
+    for(const i of (n.items||[])){const k=(i.name||"").trim();if(!k)continue;cmp[k]=cmp[k]||{};const c=cmp[k][n.supplierId]=cmp[k][n.supplierId]||{qty:0,cost:0};c.qty+=+i.qty||0;c.cost+=(+i.qty||0)*(+i.price||0)}}
+  const ratings=p.ratings||{};
+  const cmpKeys=Object.keys(cmp).sort((a,b)=>Object.keys(cmp[b]).length-Object.keys(cmp[a]).length||a.localeCompare(b,"he"));
+  const cmpHtml=cmpKeys.map(k=>{
+    const rows=Object.entries(cmp[k]).map(([sid,c])=>({sid,qty:c.qty,cost:c.cost,unit:c.qty?c.cost/c.qty:0,rate:ratings[sid+"|"+k]||""}));
+    const multi=rows.length>1;
+    const minUnit=Math.min(...rows.filter(r=>r.unit>0).map(r=>r.unit));
+    const bestRate=Math.max(0,...rows.map(r=>RATE_V[r.rate]||0));
+    return `<div style="margin-top:12px"><div style="font-weight:700;margin-bottom:4px">${esc(k)}</div>
+    <table><tr><th>ספק</th><th>כמות</th><th>ליחידה</th><th>איכות</th></tr>${rows.map(r=>{
+      const cheap=multi&&r.unit>0&&r.unit===minUnit,best=multi&&bestRate&&(RATE_V[r.rate]||0)===bestRate;
+      return `<tr><td>${esc(supName(r.sid))}${cheap?` <span class="chip" style="padding:1px 7px;font-size:11px;background:#E6F4EA;border-color:#B7DFC3">הכי זול</span>`:""}${best?` <span class="chip" style="padding:1px 7px;font-size:11px;background:#FFF4D6;border-color:#F3D99A">הכי איכותי</span>`:""}</td>
+      <td class="n">${r.qty.toLocaleString("he-IL")}</td><td class="n">${r.unit?money(r.unit):"—"}</td>
+      <td><select style="min-width:84px" onchange="evRate('${r.sid}','${esc(k).replace(/'/g,"&#39;")}',this.value)"><option value="">—</option>${Object.entries(RATE_L).map(([kk,l])=>`<option value="${kk}" ${r.rate===kk?"selected":""}>${l}</option>`).join("")}</select></td></tr>`}).join("")}</table></div>`}).join("");
+  const workers=p.workers||[];
+  return `<div class="row" style="margin-bottom:10px;justify-content:space-between"><button class="btn-s" onclick="ui.ev='';render()">→ כל החגים</button><button class="btn-x" onclick="delEvent('${p.id}')">מחיקת החג</button></div>
+  <div class="card"><h3 style="margin:0">${esc(p.name)}</h3><div class="muted" style="font-size:13px">${fmtD(p.from)} – ${fmtD(p.to)}</div></div>
+  ${prev?`<div class="card" style="border-color:#F3D99A;background:#FFFBEF"><div style="font-weight:700;margin-bottom:4px">לקחים מ${esc(prev.name)}</div><div style="white-space:pre-wrap;font-size:14px">${esc(prev.lessons)}</div></div>`:""}
+  ${statBlock(s)}
+  <div class="card"><div class="row" style="justify-content:space-between"><span>עלות עובדים</span><b>${money(wc)}</b></div>
+    <div class="row" style="justify-content:space-between;margin-top:6px"><span><b>רווח החג (אחרי עובדים)</b></span><b class="${net>=0?"":"neg"}">${sMoney(net)}</b></div></div>
+
+  <h2>זרים</h2>
+  <div class="card"><div class="grid g2">
+    <div><label>כמה זרים הוכנו</label><input type="number" inputmode="numeric" min="0" value="${made||""}" onchange="evSet('made',+this.value||0)"></div>
+    <div><label>כמה נמכרו</label><input type="number" inputmode="numeric" min="0" value="${sold||""}" onchange="evSet('sold',+this.value||0)"></div></div>
+    ${made?`<div class="muted" style="margin-top:8px;font-size:13.5px">נשארו <b style="color:var(--ink)">${left.toLocaleString("he-IL")}</b> זרים${made?` · ${Math.round(sold/made*100)}% נמכרו`:""}</div>`:""}
+  </div>
+
+  <h2>עובדים</h2>
+  <div class="card">${workers.length?`<table><tr><th>שם</th><th>שעות</th><th>תשלום</th><th></th></tr>${workers.map(w=>`<tr><td>${esc(w.name)}</td><td class="n">${(+w.hours||0).toLocaleString("he-IL")}</td><td class="n">${money(w.pay)}</td><td><button class="btn-x" onclick="delWorker('${w.id}')">✕</button></td></tr>`).join("")}
+    <tr><td><b>סה״כ</b></td><td class="n"><b>${workers.reduce((a,w)=>a+(+w.hours||0),0).toLocaleString("he-IL")}</b></td><td class="n"><b>${money(wc)}</b></td><td></td></tr></table>`:`<div class="muted" style="font-size:13.5px">עוד לא נוספו עובדים לחג הזה</div>`}
+    <div class="row" style="margin-top:10px"><button class="btn-s" onclick="workerDialog()">+ עובד</button></div>
+    <div class="muted" style="font-size:12px;margin-top:6px">אם התשלום לעובדים כבר נרשם גם כהוצאה בתנועות, הוא ייספר פעמיים ברווח.</div></div>
+
+  <h2>סחורה שנלקחה לחג</h2>
+  <div class="card">${stockKeys.length?`<table><tr><th>פריט</th><th>כמות</th><th>עלות</th></tr>${stockKeys.map(k=>`<tr><td>${esc(k)}</td><td class="n"><b>${stock[k].qty.toLocaleString("he-IL")}</b></td><td class="n">${money(stock[k].cost)}</td></tr>`).join("")}</table>`
+    :emptyState("flower","אין תעודות פריט פריט בתאריכי החג","הכמויות נלקחות מתעודות משלוח שהוזנו פריט פריט")}</div>
+
+  <h2>השוואת ספקים</h2>
+  <div class="card"><div class="muted" style="font-size:13px">אותו מוצר מספקים שונים בחג הזה. מדרגים איכות, והמערכת מסמנת את הזול והאיכותי.</div>${cmpHtml||`<div class="muted" style="margin-top:8px;font-size:13.5px">אין עדיין פריטים מספקים בתאריכי החג</div>`}</div>
+
+  <h2>לקחים לשנה הבאה</h2>
+  <div class="card"><textarea rows="4" style="width:100%" placeholder="למשל: ורדים להזמין רק מספק א׳. להכין פחות זרים גדולים." onchange="evSet('lessons',this.value)">${esc(p.lessons||"")}</textarea>
+    <div class="muted" style="font-size:12px;margin-top:6px">בשנה הבאה, בחג עם אותו שם, הלקחים יופיעו למעלה.</div></div>`;
+}
+function evRate(sid,item,val){const p=evP();if(!p)return;p.ratings=p.ratings||{};const k=sid+"|"+item;if(val)p.ratings[k]=val;else delete p.ratings[k];save();render()}
+function workerDialog(){openDlg("עובד בחג",`<label>שם</label><input id="wkN">
+  <div class="grid g2"><div><label>שעות</label><input id="wkH" type="number" inputmode="decimal" min="0"></div><div><label>תשלום בש״ח</label><input id="wkP" type="number" inputmode="decimal" min="0"></div></div>`,
+  `<button class="btn-p" onclick="saveWorker()">שמירה</button><button onclick="dlg.close()">ביטול</button>`)}
+function saveWorker(){const p=evP();if(!p)return;const n=v("wkN").trim(),h=+v("wkH")||0,pay=+v("wkP")||0;if(!n)return toast("נא למלא שם");
+  p.workers=p.workers||[];p.workers.push({id:uid(),name:n,hours:h,pay});save();dlg.close();render();toast("העובד נוסף")}
+async function delWorker(id){const p=evP();if(!p)return;if(!await ask("להסיר את העובד?"))return;p.workers=(p.workers||[]).filter(w=>w.id!==id);save();render()}
+async function delEvent(id){if(!await ask("למחוק את החג וכל מה שנרשם בו (עובדים, זרים, דירוגים ולקחים)? התעודות וההכנסות עצמן לא יימחקו."))return;S.periods=S.periods.filter(p=>p.id!==id);ui.ev="";save();render()}
 function pickPeriod(w,id){const p=S.periods.find(x=>x.id===id);if(!p)return;if(w==="a"){ui.g.aFrom=p.from;ui.g.aTo=p.to}else{ui.g.bFrom=p.from;ui.g.bTo=p.to}render()}
 async function delPeriod(id){if(!await ask("למחוק את התקופה?"))return;S.periods=S.periods.filter(p=>p.id!==id);save();render()}
 
@@ -1220,7 +1337,8 @@ function methodSel(id,val){return `<select id="${id}">${METHODS.map(m=>`<option 
 function quickAdd(){openDlg("רישום חדש",`<div class="grid" style="margin-top:8px">
   <button class="btn-g" onclick="txDialog('income')">+ הכנסה</button>
   <button class="btn-r" onclick="txDialog('expense')">+ הוצאה</button>
-  <button class="btn-p" onclick="noteDialog()">+ תעודת משלוח מספק</button></div>`,`<button onclick="dlg.close()">ביטול</button>`)}
+  <button class="btn-p" onclick="noteDialog()">+ תעודת משלוח מספק</button>
+  <button onclick="lidorDialog()">+ סחורה ללידור</button></div>`,`<button onclick="dlg.close()">ביטול</button>`)}
 
 let txType="income";
 function txDialog(type,id){
